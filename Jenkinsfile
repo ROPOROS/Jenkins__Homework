@@ -24,12 +24,4 @@ pipeline {
         }
     }
     
-    post {
-        success {
-            echo 'Pipeline succeeded. Sending email...'
-        }
-        failure {
-            echo 'Pipeline failed. Sending email...'
-        }
-    }
 }
