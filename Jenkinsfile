@@ -1,5 +1,4 @@
 pipeline {
-    
     agent any
     
     stages {
@@ -8,11 +7,29 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Email Jenkins Pipeline') {
+        stage('Send Email') {
             steps {
-                sh 'cat README.md | sendmail -t -i -f omgyeah9@gmail.com -s "Nouveau commit sur le dépôt" omgyeah9@gmail.com'
-
+                script {
+                    def emailSubject = 'Nouveau commit sur le dépôt'
+                    def emailBody = readFile('README.txt') // Read the content of README.txt
+                    
+                    emailext(
+                        subject: emailSubject,
+                        body: emailBody,
+                        to: 'recipient@example.com', // Change this to your recipient's email address
+                        attachLog: true,
+                    )
+                }
             }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Pipeline succeeded. Sending email...'
+        }
+        failure {
+            echo 'Pipeline failed. Sending email...'
         }
     }
 }
