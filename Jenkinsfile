@@ -11,17 +11,19 @@ pipeline {
             steps {
                 script {
                     def emailSubject = 'Nouveau commit sur le dépôt'
-                    def catCommandOutput = sh(script: 'cat README.txt', returnStdout: true).trim()
+                    
+                    // Use the 'sh' step to execute the 'cat' command and capture its output
+                    def catCommandOutput = sh(script: 'cat README.md', returnStdout: true).trim()
                     
                     emailext(
                         subject: emailSubject,
-                        body: emailBody,
-                        to: 'hydraesport20@gmail.com', // Change this to your recipient's email address
-                        attachLog: true,
+                        body: catCommandOutput,
+                        recipientProviders: [[$class: 'RequesterRecipientProvider']],
+                        to: emailextrecipients([[$class: 'RequesterRecipientProvider']]),
+                        attachLog: true
                     )
                 }
             }
         }
     }
-    
 }
