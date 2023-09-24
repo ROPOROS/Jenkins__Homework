@@ -20,7 +20,7 @@ pipeline {
                     
                     emailext(
                         subject: emailSubject,
-                        body: catCommandOutput,
+                        body: "${DEFAULT_CONTENT}",
                         to: 'omgyeah9@gmail.com', // Change this to your recipient's email address
                         attachLog: true
                     )
