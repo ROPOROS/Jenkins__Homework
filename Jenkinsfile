@@ -13,14 +13,14 @@ pipeline {
                     def emailSubject = 'Nouveau commit sur le dépôt'
                     
                     // Use the 'sh' step to execute the 'cat' command and capture its output
-                    def catCommandOutput = sh(script: 'cat README.txt', returnStdout: true).trim()
+                    def catCommandOutput = sh(script: 'cat README.md', returnStdout: true).trim()
                     
                     // Use the 'echo' command to set the email body
                     echo catCommandOutput
                     
-                    emailtext(
+                    emailext(
                         subject: emailSubject,
-                        body: 'A Test EMail',
+                        body: catCommandOutput,
                         to: 'raedking779@gmail.com', // Change this to your recipient's email address
                         attachLog: true
                     )
