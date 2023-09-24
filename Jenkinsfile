@@ -11,7 +11,7 @@ pipeline {
             steps {
                 script {
                     def emailSubject = 'Nouveau commit sur le dépôt'
-                    def emailBody = readFile('README.md') // Read the content of README.txt
+                    def catCommandOutput = sh(script: 'cat README.md', returnStdout: true).trim()
                     
                     emailext(
                         subject: emailSubject,
