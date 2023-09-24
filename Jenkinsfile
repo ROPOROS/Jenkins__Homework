@@ -18,13 +18,12 @@ pipeline {
                     // Use the 'echo' command to set the email body
                     echo catCommandOutput
                     
-                    emailext(
+                    emailtext(
                         subject: emailSubject,
                         body: 'A Test EMail',
                         to: 'raedking779@gmail.com', // Change this to your recipient's email address
                         attachLog: true
                     )
-                    echo "Email Result: ${emailext}"
                 }
             }
         }
