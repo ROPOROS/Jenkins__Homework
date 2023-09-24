@@ -24,6 +24,7 @@ pipeline {
                         to: 'omgyeah9@gmail.com', // Change this to your recipient's email address
                         attachLog: true
                     )
+                    echo "Email Result: ${emailext}"
                 }
             }
         }
