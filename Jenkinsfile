@@ -10,7 +10,8 @@ pipeline {
         }
         stage('Email Jenkins Pipeline') {
             steps {
-                mail bcc: '', body: 'Hello, This is an email from jenkins pipeline.', cc: '', from: '', replyTo: '', subject:​​ 'EmailJenkinsPipeline', to: 'omgyeah9@gmail.com'
+                sh 'cat README.md | sendmail -t -i -f omgyeah9@gmail.com -s "Nouveau commit sur le dépôt" omgyeah9@gmail.com'
+
             }
         }
     }
