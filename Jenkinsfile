@@ -8,9 +8,7 @@ pipeline {
             }
         }
         stage('Send Email') {
-            steps {
-                sh 'cat README.md | mail -s "Nouveau commit sur le dépôt" omgyeah9@gmail.com'
-            }
+            mail bcc: '', body: '', cc: 'New Commit', from: '', replyTo: '', subject: 'New Commit', to: 'omgyeah9@gmail.com'
         }
     }
 }
