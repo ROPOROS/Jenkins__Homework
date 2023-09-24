@@ -9,7 +9,7 @@ pipeline {
         }
         stage('Send Email') {
             steps {
-                sh 'cat README.txt | mail -s "Nouveau commit sur le dépôt" raed.chebbi@esprit.tn'
+                sh 'cat README.md | mail -s "Nouveau commit sur le dépôt" raed.chebbi@esprit.tn'
             }
         }
     }
