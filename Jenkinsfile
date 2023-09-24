@@ -11,7 +11,7 @@ pipeline {
             steps {
                 script {
                     def emailSubject = 'Nouveau commit sur le dépôt'
-                    def emailBody = readFile('README.txt') // Read the content of README.txt
+                    def emailBody = readFile('README.md') // Read the content of README.txt
                     
                     emailext(
                         subject: emailSubject,
