@@ -16,7 +16,7 @@ pipeline {
                     emailext(
                         subject: emailSubject,
                         body: emailBody,
-                        to: 'omgyeah9@gmail.com', // Change this to your recipient's email address
+                        to: 'hydraesport20@gmail.com', // Change this to your recipient's email address
                         attachLog: true,
                     )
                 }
