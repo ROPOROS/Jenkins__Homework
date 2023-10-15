@@ -7,22 +7,20 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Send Email') {
+        
+        stage('Send Email Notification') {
             steps {
                 script {
-                    def emailSubject = 'Nouveau commit sur le dépôt'
+                    def contenuReadMe = readFile('README.txt')
                     
-                    // Use the 'sh' step to execute the 'cat' command and capture its output
-                    def catCommandOutput = sh(script: 'cat README.txt', returnStdout: true).trim()
+                    def subject = 'New Project Commit - Mario'
+                    def body = "A new commit has been made to the repository..\n\n${contenuReadMe}"
+                    def to = 'raedking779@gmail.com'
                     
-                    // Use the 'echo' command to set the email body
-                    echo catCommandOutput
-                    
-                    emailext(
-                        subject: emailSubject,
-                        body: catCommandOutput,
-                        to: 'raedking779@gmail.com', // Change this to your recipient's email address
-                        attachLog: true
+                    mail(
+                        subject: subject,
+                        body: body,
+                        to: to,
                     )
                 }
             }
