@@ -7,6 +7,17 @@ pipeline {
                 checkout scm
             }
         }
+
+         stage('Run Unit Tests') {
+                    steps {
+                        script {
+                            // Add the command to run your Spring Boot unit tests here
+                            sh 'mvn test' // Example for Maven-based projects
+
+                            // You can adjust the command to match your project's build tool
+                        }
+                    }
+                }
         
         stage('Send Email Notification') {
             steps {
