@@ -19,7 +19,7 @@ pipeline {
                     }
                 }
         
-        stage('Send Email Notification') {
+        stage('Send Email ') {
             steps {
                 script {
                     def contenuReadMe = readFile('README.txt')
