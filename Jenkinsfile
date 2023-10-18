@@ -32,23 +32,23 @@ pipeline {
         }
     }
 
-    post {
-        success {
-            // Add post-build actions or notifications for a successful build
-            // For example, archive artifacts, send an email, etc.
-        }
-        failure {
-            script {
-                def subject = "Build Failure - ${currentBuild.fullDisplayName}"
-                def body = "The build has failed in the Jenkins pipeline. Please investigate and take appropriate action."
-                def to = 'raedking779@gmail.com' // Replace with your email address
+        post {
+            success {
+                // Placeholder for post-build actions for a successful build
+                // Add specific actions or notifications here
+            }
+            failure {
+                script {
+                    def subject = "Build Failure - ${currentBuild.fullDisplayName}"
+                    def body = "The build has failed in the Jenkins pipeline. Please investigate and take appropriate action."
+                    def to = 'your-email@example.com' // Replace with your email address
 
-                mail(
-                    subject: subject,
-                    body: body,
-                    to: to,
-                )
+                    mail(
+                        subject: subject,
+                        body: body,
+                        to: to,
+                    )
+                }
             }
         }
     }
-}
