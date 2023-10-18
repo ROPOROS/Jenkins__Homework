@@ -41,7 +41,7 @@ pipeline {
                 script {
                     def subject = "Build Failure - ${currentBuild.fullDisplayName}"
                     def body = "The build has failed in the Jenkins pipeline. Please investigate and take appropriate action."
-                    def to = 'your-email@example.com' // Replace with your email address
+                    def to = 'raedking779@gmail.com' // Replace with your email address
 
                     mail(
                         subject: subject,
