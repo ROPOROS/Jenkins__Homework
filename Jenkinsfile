@@ -1,39 +1,53 @@
 pipeline {
     agent any
-    
+
     stages {
-        stage('Checkout') {
+        stage('Checkout GIT') {
             steps {
                 checkout scm
             }
         }
 
-         stage('Run Unit Tests') {
-                    steps {
-                        script {
-                            // Add the command to run your Spring Boot unit tests here
-                            sh 'mvn test' // Example for Maven-based projects
-
-                            // You can adjust the command to match your project's build tool
-                        }
-                    }
-                }
-        
-        stage('Send Email ') {
+        stage('Run Unit Tests JUNIT') {
             steps {
                 script {
-                    def contenuReadMe = readFile('README.txt')
-                    
-                    def subject = 'New Project Commit - Mario'
-                    def body = "A new commit has been made to the repository..\n\n${contenuReadMe}"
-                    def to = 'raedking779@gmail.com'
-                    
-                    mail(
-                        subject: subject,
-                        body: body,
-                        to: to,
-                    )
+                    // Add the command to run your Spring Boot unit tests here
+                    sh 'mvn test' // Example for Maven-based projects
                 }
+            }
+        }
+
+        stage('Build Spring Boot Application') {
+            steps {
+                script {
+                    try {
+                        // Use Maven to build the Spring Boot application
+                        sh 'mvn clean package' // Replace with your actual Maven build command
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE' // Mark the build as unstable
+                        error("Build failed: ${e.message}")
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            // Add post-build actions or notifications for a successful build
+            // For example, archive artifacts, send an email, etc.
+        }
+        failure {
+            script {
+                def subject = "Build Failure - ${currentBuild.fullDisplayName}"
+                def body = "The build has failed in the Jenkins pipeline. Please investigate and take appropriate action."
+                def to = 'raedking779@gmail.com' // Replace with your email address
+
+                mail(
+                    subject: subject,
+                    body: body,
+                    to: to,
+                )
             }
         }
     }
