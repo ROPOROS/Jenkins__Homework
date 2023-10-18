@@ -34,8 +34,17 @@ pipeline {
 
         post {
             success {
-                // Placeholder for post-build actions for a successful build
-                // Add specific actions or notifications here
+                script {
+                                    def subject = "HURRAAYYY"
+                                    def body = "BUILD GOOD"
+                                    def to = 'raedking779@gmail.com' // Replace with your email address
+
+                                    mail(
+                                        subject: subject,
+                                        body: body,
+                                        to: to,
+                                    )
+                                }
             }
             failure {
                 script {
