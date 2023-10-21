@@ -32,10 +32,5 @@ public class Operator implements Serializable{
 	@OneToMany
 	@JsonIgnore
 	Set<Invoice> invoices;
-
-	public Operator(int i, String s) {
-	}
-
-	public Operator(Long id, String s) {
-	}
+	
 }
