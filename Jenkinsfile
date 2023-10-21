@@ -10,12 +10,15 @@ pipeline {
 
         stage('Run Unit Tests JUNIT') {
             steps {
-                script {
-                    // Add the command to run your Spring Boot unit tests here
-                    sh 'mvn test' // Example for Maven-based projects
+                dir('DevOps_Project') {
+                    script {
+                        // Add the command to run your Spring Boot unit tests here
+                        sh 'mvn test' // Example for Maven-based projects
+                    }
                 }
             }
         }
+
 
         stage('Build and Test Backend') {
             steps {
