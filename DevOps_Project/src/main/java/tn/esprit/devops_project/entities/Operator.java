@@ -33,6 +33,5 @@ public class Operator implements Serializable{
 	@JsonIgnore
 	Set<Invoice> invoices;
 
-	public Operator(int i, String s) {
-	}
+
 }

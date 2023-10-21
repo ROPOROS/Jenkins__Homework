@@ -35,8 +35,8 @@ public class OperatorServiceImplTest {
     @Test
     public void testRetrieveAllOperators() {
         List<Operator> operators = new ArrayList<>();
-        operators.add(new Operator(1, "Operator 1"));
-        operators.add(new Operator(2, "Operator 2"));
+        operators.add(new Operator(1L, "John", "Doe", "Password", null)); // Adjust the constructor parameters
+        operators.add(new Operator(2L, "Johnn", "Doee", "Passwordd", null)); // Adjust the constructor parameters
 
         when(operatorRepository.findAll()).thenReturn(operators);
 
@@ -47,7 +47,7 @@ public class OperatorServiceImplTest {
 
     @Test
     public void testAddOperator() {
-        Operator operator = new Operator(1, "Operator 1");
+        Operator operator = new Operator(1L, "John", "Doe", "Password", null); // Adjust the constructor parameters
         when(operatorRepository.save(operator)).thenReturn(operator);
 
         Operator result = operatorService.addOperator(operator);
@@ -65,7 +65,7 @@ public class OperatorServiceImplTest {
 
     @Test
     public void testUpdateOperator() {
-        Operator operator = new Operator(1, "Operator 1");
+        Operator operator = new Operator(1L, "John", "Doe", "Password", null); // Adjust the constructor parameters
         when(operatorRepository.save(operator)).thenReturn(operator);
 
         Operator result = operatorService.updateOperator(operator);
@@ -76,7 +76,7 @@ public class OperatorServiceImplTest {
     @Test
     public void testRetrieveOperator() {
         Long id = 1L;
-        Operator operator = new Operator(1, "Operator 1");
+        Operator operator = new Operator(1L, "John", "Doe", "Password", null); // Adjust the constructor parameters
         when(operatorRepository.findById(id)).thenReturn(Optional.of(operator));
 
         Operator result = operatorService.retrieveOperator(id);
