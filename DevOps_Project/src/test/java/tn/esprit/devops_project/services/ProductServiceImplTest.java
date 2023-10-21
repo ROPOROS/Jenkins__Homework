@@ -1,5 +1,6 @@
 package tn.esprit.devops_project.services;
 
+
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -13,10 +14,10 @@ import tn.esprit.devops_project.repositories.StockRepository;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class ProductServiceImplTest {
 
