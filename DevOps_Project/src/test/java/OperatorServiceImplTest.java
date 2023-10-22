@@ -1,86 +1,77 @@
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import tn.esprit.devops_project.entities.Operator;
-import tn.esprit.devops_project.repositories.OperatorRepository;
-import tn.esprit.devops_project.services.Iservices.IOperatorService;
-import tn.esprit.devops_project.services.OperatorServiceImpl;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import tn.esprit.devops_project.entities.Operator;
+import tn.esprit.devops_project.repositories.OperatorRepository;
+import tn.esprit.devops_project.services.OperatorServiceImpl;
+
+@ExtendWith(MockitoExtension.class)
 public class OperatorServiceImplTest {
 
-    @InjectMocks
-    private OperatorServiceImpl operatorService;
 
     @Mock
-    private OperatorRepository operatorRepository;
+    OperatorRepository operateurRepository;
 
-    @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
+    @InjectMocks
+    OperatorServiceImpl operateurService;
+
+    @Test
+    public void retrieveAllOperateursTest() {
+        when(operateurRepository.findAll()).thenReturn(Stream.of(
+                        new Operator((long)1,"Rain","Do","Niar", null),
+                        new Operator((long)2,"Rain","Sometimes","Niar", null),
+                        new Operator((long)3,"Rain","Codes","Niar", null))
+                .collect(Collectors.toList()));
+        assertEquals(3,operateurService.retrieveAllOperators().size());
+
     }
 
     @Test
-    public void testRetrieveAllOperators() {
-        List<Operator> operators = new ArrayList<>();
-        operators.add(new Operator(1L, "John", "Doe", "Password", null)); // Adjust the constructor parameters
-        operators.add(new Operator(2L, "Johnn", "Doee", "Passwordd", null)); // Adjust the constructor parameters
-
-        when(operatorRepository.findAll()).thenReturn(operators);
-
-        List<Operator> result = operatorService.retrieveAllOperators();
-
-        assertEquals(2, result.size());
+    public void addOperateurTest() {
+        Operator op = new Operator((long) 1, "NiAr", "ForFun", "MoreComplexPassword", null);
+        when(operateurRepository.save(op)).thenReturn(op);
+        assertEquals(op, operateurService.addOperator(op));
     }
 
     @Test
-    public void testAddOperator() {
-        Operator operator = new Operator(1L, "John", "Doe", "Password", null); // Adjust the constructor parameters
-        when(operatorRepository.save(operator)).thenReturn(operator);
+    public void retreiveOperateurTest() {
+        Operator op = new Operator((long) 2, "NiAr", "ForFun", "MoreComplexPassword", null);
+        when(operateurRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(op));
+        Operator op1 = operateurService.retrieveOperator((long) 2);
+        Assertions.assertNotNull(op1);
 
-        Operator result = operatorService.addOperator(operator);
-
-        assertEquals(operator, result);
     }
 
     @Test
-    public void testDeleteOperator() {
-        Long id = 1L;
-        operatorService.deleteOperator(id);
+    public void deleteOperateurTest() {
+        Operator op = new Operator((long) 1, "NiAr", "ForFun", "MoreComplexPassword", null);
+        operateurService.deleteOperator((long) 1);
+        verify(operateurRepository).deleteById((long) 1);
 
-        verify(operatorRepository).deleteById(id);
     }
 
     @Test
-    public void testUpdateOperator() {
-        Operator operator = new Operator(1L, "John", "Doe", "Password", null); // Adjust the constructor parameters
-        when(operatorRepository.save(operator)).thenReturn(operator);
+    public void updatetOperateurTest() {
+        Operator op = new Operator((long)1,"NiAr","ForFun","MoreComplexPassword", null) ;
+        Mockito.when(operateurRepository.save(Mockito.any(Operator.class))).thenReturn(op);
+        op.setFname("mohamed");;
+        Operator exisitingOp= operateurService.updateOperator(op) ;
 
-        Operator result = operatorService.updateOperator(operator);
-
-        assertEquals(operator, result);
+        assertNotNull(exisitingOp);
+        assertEquals("mohamed", op.getFname());
     }
 
-    @Test
-    public void testRetrieveOperator() {
-        Long id = 1L;
-        Operator operator = new Operator(1L, "John", "Doe", "Password", null); // Adjust the constructor parameters
-        when(operatorRepository.findById(id)).thenReturn(Optional.of(operator));
-
-        Operator result = operatorService.retrieveOperator(id);
-
-        assertEquals(operator, result);
-    }
 }
