@@ -31,9 +31,9 @@ public class OperatorServiceImplTest {
     @Test
     public void retrieveAllOperateursTest() {
         when(operateurRepository.findAll()).thenReturn(Stream.of(
-                        new Operator((long)1,"Rain","Do","Niar", null),
-                        new Operator((long)2,"Rain","Sometimes","Niar", null),
-                        new Operator((long)3,"Rain","Codes","Niar", null))
+                        new Operator(1L,"Rain","Do","Niar", null),
+                        new Operator(2L,"Rain","Sometimes","Niar", null),
+                        new Operator(3L,"Rain","Codes","Niar", null))
                 .collect(Collectors.toList()));
         assertEquals(3,operateurService.retrieveAllOperators().size());
 
@@ -41,31 +41,31 @@ public class OperatorServiceImplTest {
 
     @Test
     public void addOperateurTest() {
-        Operator op = new Operator((long) 1, "NiAr", "ForFun", "MoreComplexPassword", null);
+        Operator op = new Operator(1L, "NiAr", "ForFun", "MoreComplexPassword", null);
         when(operateurRepository.save(op)).thenReturn(op);
         assertEquals(op, operateurService.addOperator(op));
     }
 
     @Test
     public void retreiveOperateurTest() {
-        Operator op = new Operator((long) 2, "NiAr", "ForFun", "MoreComplexPassword", null);
+        Operator op = new Operator(2L, "NiAr", "ForFun", "MoreComplexPassword", null);
         when(operateurRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(op));
-        Operator op1 = operateurService.retrieveOperator((long) 2);
+        Operator op1 = operateurService.retrieveOperator(2L);
         Assertions.assertNotNull(op1);
 
     }
 
     @Test
     public void deleteOperateurTest() {
-        Operator op = new Operator((long) 1, "NiAr", "ForFun", "MoreComplexPassword", null);
-        operateurService.deleteOperator((long) 1);
-        verify(operateurRepository).deleteById((long) 1);
+        Operator op = new Operator(1L, "NiAr", "ForFun", "MoreComplexPassword", null);
+        operateurService.deleteOperator(1L);
+        verify(operateurRepository).deleteById(1L);
 
     }
 
     @Test
     public void updatetOperateurTest() {
-        Operator op = new Operator((long)1,"NiAr","ForFun","MoreComplexPassword", null) ;
+        Operator op = new Operator(1L,"NiAr","ForFun","MoreComplexPassword", null) ;
         Mockito.when(operateurRepository.save(Mockito.any(Operator.class))).thenReturn(op);
         op.setFname("mohamed");;
         Operator exisitingOp= operateurService.updateOperator(op) ;
