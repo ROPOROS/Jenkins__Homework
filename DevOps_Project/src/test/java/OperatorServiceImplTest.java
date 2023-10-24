@@ -56,6 +56,14 @@ public class OperatorServiceImplTest {
     }
 
     @Test
+    public void retrieveOperatorNotFoundTest() {
+        when(operateurRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            operateurService.retrieveOperator(2L);
+        });
+    }
+
+    @Test
     public void deleteOperateurTest() {
         Operator op = new Operator(1L, "NiAr", "ForFun", "MoreComplexPassword", null);
         operateurService.deleteOperator(1L);

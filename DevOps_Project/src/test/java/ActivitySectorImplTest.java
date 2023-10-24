@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -57,6 +58,14 @@ public class ActivitySectorImplTest {
 
         assertNotNull(retrievedActivitySector);
         assertEquals("Code1", retrievedActivitySector.getCodeSecteurActivite());
+    }
+
+    @Test
+    public void retrieveActivitySectorNotFoundTest() {
+        when(activitySectorRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            activitySectorService.retrieveActivitySector(1L);
+        });
     }
 
     @Test

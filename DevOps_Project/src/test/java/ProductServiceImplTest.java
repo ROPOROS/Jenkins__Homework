@@ -49,6 +49,20 @@ public class ProductServiceImplTest {
     }
 
     @Test
+    public void addProductStockNotFoundTest() {
+        // Mock the behavior for not finding the stock
+        when(stockRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+
+        Stock stock = new Stock(1L, "Stock1", null);
+        Product product = new Product(1L, "Product1", 10.0f, 5, ProductCategory.ELECTRONICS, stock);
+
+        // Assert that adding a product in this scenario should throw an exception
+        Assertions.assertThrows(NullPointerException.class, () -> productService.addProduct(product, 1L));
+    }
+
+
+
+    @Test
     public void retrieveProductTest() {
         Product product = new Product(1L, "Product1", 10.0f, 5, ProductCategory.ELECTRONICS, null);
         when(productRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(product));
@@ -56,6 +70,14 @@ public class ProductServiceImplTest {
 
         assertNotNull(retrievedProduct);
         assertEquals("Product1", retrievedProduct.getTitle());
+    }
+
+    @Test
+    public void retrieveProductNotFoundTest() {
+        when(productRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            productService.retrieveProduct(1L);
+        });
     }
 
     @Test

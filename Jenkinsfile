@@ -68,5 +68,17 @@ pipeline {
                 }
             }
         }
+
+        stage('Build Frontend') {
+            steps {
+                dir('DevOps_Project_Front') {
+                    script {
+                        // Navigate to the Angular project directory
+                        sh 'npm install' // Install project dependencies
+                        sh 'ng build'      // Build the Angular frontend
+                    }
+                }
+            }
+        }
     }
 }

@@ -45,12 +45,22 @@ public class StockServiceImplTest {
         assertEquals(stock, stockService.addStock(stock));
     }
 
+    // Test for stock found
     @Test
-    public void retreiveStockTest() {
+    public void retrieveStockFoundTest() {
         Stock stock = new Stock(2L, "Boxes", null);
         when(stockRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(stock));
         Stock stock1 = stockService.retrieveStock(2L);
         Assertions.assertNotNull(stock1);
-
     }
+
+    // Test for stock not found
+    @Test
+    public void retrieveStockNotFoundTest() {
+        when(stockRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            stockService.retrieveStock(2L);
+        });
+    }
+
 }

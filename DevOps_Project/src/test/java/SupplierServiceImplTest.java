@@ -57,6 +57,14 @@ public class SupplierServiceImplTest {
     }
 
     @Test
+    public void retrieveSupplierNotFoundTest() {
+        when(supplierRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            supplierService.retrieveSupplier(2L);
+        });
+    }
+
+    @Test
     public void deleteSupplierTest() {
         Supplier supplier = new Supplier(1L,"Code1","label1", SupplierCategory.CONVENTIONNE,null, null);
         supplierService.deleteSupplier(1L);
