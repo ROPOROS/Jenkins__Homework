@@ -3,6 +3,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -28,18 +29,21 @@ public class SupplierServiceImplTest {
     @InjectMocks
     SupplierServiceImpl supplierService;
 
+    //Test for retrieving all suppliers
     @Test
     public void retrieveAllSuppliersTest() {
-        when(supplierRepository.findAll()).thenReturn(Stream.of(
-                        new Supplier(1L,"Code1","label1", SupplierCategory.CONVENTIONNE,null, null),
-                        new Supplier(2L,"Code2","label2", SupplierCategory.ORDINAIRE,null, null),
-                        new Supplier(3L,"Code3","label3", SupplierCategory.ORDINAIRE,null, null))
-                        .collect(Collectors.toList()));
+        when(supplierRepository.findAll()).thenReturn(
+                Arrays.asList(
+                        new Supplier(1L, "Code1", "label1", SupplierCategory.CONVENTIONNE, null, null),
+                        new Supplier(2L, "Code2", "label2", SupplierCategory.ORDINAIRE, null, null),
+                        new Supplier(3L, "Code3", "label3", SupplierCategory.ORDINAIRE, null, null)
+                )
+        );
 
-        assertEquals(3,supplierService.retrieveAllSuppliers().size());
-
-
+        assertEquals(3, supplierService.retrieveAllSuppliers().size());
     }
+
+    // Test for adding a supplier
     @Test
     public void addSupplierTest() {
         Supplier supplier = new Supplier(1L,"Code1","label1", SupplierCategory.CONVENTIONNE,null, null);
@@ -47,6 +51,7 @@ public class SupplierServiceImplTest {
         assertEquals(supplier, supplierService.addSupplier(supplier));
     }
 
+    // Test for supplier found
     @Test
     public void retreiveSupplierTest() {
         Supplier supplier = new Supplier(2L,"Code2","label2", SupplierCategory.ORDINAIRE,null, null);
@@ -55,7 +60,7 @@ public class SupplierServiceImplTest {
         Assertions.assertNotNull(supplier1);
 
     }
-
+    //Test for supplier not found
     @Test
     public void retrieveSupplierNotFoundTest() {
         when(supplierRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
@@ -64,14 +69,14 @@ public class SupplierServiceImplTest {
         });
     }
 
+    //Test for deleting a supplier
     @Test
     public void deleteSupplierTest() {
-        Supplier supplier = new Supplier(1L,"Code1","label1", SupplierCategory.CONVENTIONNE,null, null);
         supplierService.deleteSupplier(1L);
         verify(supplierRepository).deleteById(1L);
 
     }
-
+    //Test for updating a supplier
     @Test
     public void updateSupplierTest() {
         Supplier supplier = new Supplier(1L,"Code1","label1", SupplierCategory.CONVENTIONNE,null, null);

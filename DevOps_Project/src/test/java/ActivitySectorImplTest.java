@@ -3,6 +3,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,11 +30,12 @@ public class ActivitySectorImplTest {
 
     @Test
     public void retrieveAllActivitySectorsTest() {
-        when(activitySectorRepository.findAll()).thenReturn(Stream.of(
+        when(activitySectorRepository.findAll()).thenReturn(Arrays.asList(
                         new ActivitySector(1L, "Code1", "Label1", null),
                         new ActivitySector(2L, "Code2", "Label2", null),
-                        new ActivitySector(3L, "Code3", "Label3", null))
-                .collect(Collectors.toList()));
+                        new ActivitySector(3L, "Code3", "Label3", null)
+                )
+        );
 
         List<ActivitySector> activitySectors = activitySectorService.retrieveAllActivitySectors();
 

@@ -41,16 +41,19 @@ public class InvoiceServiceImplTest {
 
     @Test
     public void retrieveAllInvoicesTest() {
-        when(invoiceRepository.findAll()).thenReturn(Stream.of(
+        when(invoiceRepository.findAll()).thenReturn(
+                Arrays.asList(
                         new Invoice(1L, 10.0f, 100.0f, new Date(), new Date(), false, null, null),
                         new Invoice(2L, 20.0f, 200.0f, new Date(), new Date(), false, null, null),
-                        new Invoice(3L, 30.0f, 300.0f, new Date(), new Date(), false, null, null))
-                .collect(Collectors.toList()));
+                        new Invoice(3L, 30.0f, 300.0f, new Date(), new Date(), false, null, null)
+                )
+        );
 
         List<Invoice> invoiceList = invoiceService.retrieveAllInvoices();
 
         assertEquals(3, invoiceList.size());
     }
+
 
     @Test
     public void cancelInvoiceTest() {

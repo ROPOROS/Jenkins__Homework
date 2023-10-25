@@ -16,31 +16,31 @@ public class ProductController {
     private final IProductService productService;
 
     @PostMapping("/product/{idStock}")
-    Product addProduct(@RequestBody Product product,@PathVariable Long idStock){
+    public Product addProduct(@RequestBody Product product,@PathVariable Long idStock){
         return productService.addProduct(product,idStock);
     }
 
     @GetMapping("/product/{id}")
-    Product retrieveProduct(@PathVariable Long id){
+    public Product retrieveProduct(@PathVariable Long id){
         return productService.retrieveProduct(id);
     }
 
     @GetMapping("/product")
-    List<Product> retreiveAllProduct(){
+    public List<Product> retreiveAllProduct(){
         return productService.retreiveAllProduct();
     }
     @GetMapping("/product/stock/{id}")
-    List<Product> retreiveProductStock(@PathVariable Long id){
+    public List<Product> retreiveProductStock(@PathVariable Long id){
         return productService.retreiveProductStock(id);
     }
 
     @GetMapping("/productCategoy/{category}")
-    List<Product> retrieveProductByCategory(@PathVariable ProductCategory category){
+    public List<Product> retrieveProductByCategory(@PathVariable ProductCategory category){
         return productService.retrieveProductByCategory(category);
     }
 
     @DeleteMapping("/product/{id}")
-    void deleteProduct(@PathVariable Long id){
+    public void deleteProduct(@PathVariable Long id){
         productService.deleteProduct(id);
     }
 }

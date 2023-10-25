@@ -3,6 +3,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -28,16 +29,21 @@ public class StockServiceImplTest {
     @InjectMocks
     StockServiceImpl stockService;
 
+    //Test for retrieving all stocks
     @Test
     public void retrieveAllStocksTest() {
-        when(stockRepository.findAll()).thenReturn(Stream.of(
+        when(stockRepository.findAll()).thenReturn(
+                Arrays.asList(
                         new Stock(1L, "Milk", null),
                         new Stock(2L, "Boxes", null),
-                        new Stock(3L, "Cartons", null))
-                .collect(Collectors.toList()));
+                        new Stock(3L, "Cartons", null)
+                )
+        );
+
         assertEquals(3, stockService.retrieveAllStock().size());
     }
 
+    // Test for adding stock
     @Test
     public void addStockTest() {
         Stock stock = new Stock(1L, "Milk", null);
