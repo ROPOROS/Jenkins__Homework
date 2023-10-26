@@ -15,8 +15,7 @@ pipeline {
             steps {
                 dir('DevOps_Project') {
                     script {
-                        // Add the command to run your Spring Boot unit tests here
-                        sh 'mvn clean test' // Example for Maven-based projects
+                        sh 'mvn clean test' 
                     }
                 }
             }
@@ -32,10 +31,9 @@ pipeline {
                 dir('DevOps_Project') {
                     script {
                         try {
-                            // Use Maven to build the Spring Boot application
-                            sh 'mvn clean install' // Replace with your actual Maven build command
+                            sh 'mvn clean install' 
                         } catch (Exception e) {
-                            currentBuild.result = 'FAILURE' // Mark the build as unstable
+                            currentBuild.result = 'FAILURE' 
                             error("Build failed: ${e.message}")
                         }
                     }
@@ -47,7 +45,7 @@ pipeline {
                     script {
                         def subject = "HURRAAYYY"
                         def body = "BUILD GOOD"
-                        def to = 'raedking779@gmail.com' // Replace with your email address
+                        def to = 'raedking779@gmail.com' 
 
                         mail(
                             subject: subject,
@@ -60,7 +58,7 @@ pipeline {
                     script {
                         def subject = "Build Failure - ${currentBuild.fullDisplayName}"
                         def body = "The build has failed in the Jenkins pipeline. Please investigate and take appropriate action."
-                        def to = 'raedking779@gmail.com' // Replace with your email address
+                        def to = 'raedking779@gmail.com' 
 
                         mail(
                             subject: subject,
@@ -76,9 +74,9 @@ pipeline {
             steps {
                 dir('DevOps_Project_Front') {
                     script {
-                        // Navigate to the Angular project directory
-                        sh 'npm install' // Install project dependencies
-                        sh 'ng build'      // Build the Angular frontend
+                        
+                        sh 'npm install' 
+                        sh 'ng build'      
                     }
                 }
             }
@@ -88,8 +86,7 @@ pipeline {
             steps {
                 dir('DevOps_Project') {
                     script {
-                        // Deploy Maven artifacts to Nexus
-                        sh 'mvn deploy -DskipTests' // Deploy and skip tests
+                        sh 'mvn deploy -DskipTests' 
                     }
                 }
             }
