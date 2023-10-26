@@ -15,27 +15,27 @@ public class ActivitySectorController {
     IActivitySector activitySectorService;
 
     @GetMapping("/activitySector")
-    List<ActivitySector> retrieveAllActivitySectors(){
+    public List<ActivitySector> retrieveAllActivitySectors(){
         return activitySectorService.retrieveAllActivitySectors();
     }
 
     @PostMapping("/activitySector")
-    ActivitySector addActivitySector(@RequestBody ActivitySector activitySector){
+    public ActivitySector addActivitySector(@RequestBody ActivitySector activitySector){
         return activitySectorService.addActivitySector(activitySector);
     }
 
     @DeleteMapping("/activitySector/{id}")
-    void deleteActivitySector(@PathVariable Long id){
+    public void deleteActivitySector(@PathVariable Long id){
         activitySectorService.deleteActivitySector(id);
     }
 
     @PutMapping("/activitySector")
-    ActivitySector updateActivitySector(@RequestBody ActivitySector activitySector){
+    public ActivitySector updateActivitySector(@RequestBody ActivitySector activitySector){
         return activitySectorService.updateActivitySector(activitySector);
     }
 
     @GetMapping("/activitySector/{id}")
-    ActivitySector retrieveActivitySector(@PathVariable Long id){
+    public ActivitySector retrieveActivitySector(@PathVariable Long id){
         return activitySectorService.retrieveActivitySector(id);
     }
 }

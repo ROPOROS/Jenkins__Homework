@@ -1,14 +1,8 @@
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.never;
 
-
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.*;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,8 +13,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import tn.esprit.devops_project.entities.*;
 import tn.esprit.devops_project.repositories.*;
-import tn.esprit.devops_project.services.ActivitySectorImpl;
 import tn.esprit.devops_project.services.InvoiceServiceImpl;
+import tn.esprit.devops_project.services.OperatorServiceImpl;
+
 
 @ExtendWith(MockitoExtension.class)
 public class InvoiceServiceImplTest {
@@ -38,6 +33,9 @@ public class InvoiceServiceImplTest {
 
     @InjectMocks
     InvoiceServiceImpl invoiceService;
+
+    @InjectMocks
+    OperatorServiceImpl operatorService;
 
     @Test
     public void retrieveAllInvoicesTest() {
@@ -70,36 +68,12 @@ public class InvoiceServiceImplTest {
         // Simulate that the invoice is not found
         when(invoiceRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // Call the cancelInvoice method for an invoice that is not found
         Assertions.assertThrows(NullPointerException.class, () -> {
             invoiceService.cancelInvoice(1L);
         });
-
-        // Verify that the find method was called
         verify(invoiceRepository).findById(1L);
 
-        // Additional assertion: Ensure that no invoices were archived
-        // You might need to adjust this based on your data setup
     }
-
-    /*@Test
-    public void cancelInvoiceWithJPQLTest() {
-        // Create an invoice that we expect to be canceled using JPQL
-        Invoice invoice = new Invoice(1L, 10.0f, 100.0f, new Date(), new Date(), false, null, null);
-
-        when(invoiceRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(invoice)); // Simulate finding the invoice
-        doNothing().when(invoiceRepository).updateInvoice(Mockito.anyLong()); // Mock the JPQL update method
-
-        // Call the cancelInvoice method
-        invoiceService.cancelInvoice(1L);
-
-        // Verify that the find method was called and the save method was never called
-        verify(invoiceRepository).findById(1L);
-        verify(invoiceRepository, never()).save(invoice);
-        verify(invoiceRepository).updateInvoice(1L); // Verify that the JPQL update method was called
-    }*/
-
-
 
     @Test
     public void retrieveInvoiceTest() {
@@ -134,5 +108,76 @@ public class InvoiceServiceImplTest {
         assertEquals(500.0f, totalAmount);
     }
 
+    @Test
+    public void testAssignOperatorToInvoice() {
+        Long idOperator = 1L;
+        Long idInvoice = 1L;
+
+        Operator operator = new Operator(idOperator, "fathi", "hadewi", "fathi123", new HashSet<>());
+        Invoice invoice = new Invoice(idInvoice, 10.0f, 100.0f, new Date(), new Date(), false, null, null);
+
+        when(invoiceRepository.findById(idInvoice)).thenReturn(Optional.of(invoice));
+        when(operatorRepository.findById(idOperator)).thenReturn(Optional.of(operator));
+
+        invoiceService.assignOperatorToInvoice(idOperator, idInvoice);
+
+        Set<Invoice> invoices = operator.getInvoices();
+        assertThat(invoices).contains(invoice);
+    }
+
+    @Test
+    public void assignOperatorToInvoiceInvoiceNotFound() {
+        Long idOperator = 1L;
+        Long idInvoice = 2L;
+
+        when(invoiceRepository.findById(idInvoice)).thenReturn(Optional.empty());
+
+        assertThrows(NullPointerException.class, () -> invoiceService.assignOperatorToInvoice(idOperator, idInvoice));
+    }
+
+    @Test
+    public void assignOperatorToInvoiceOperatorNotFound() {
+        Long idOperator = 1L;
+        Long idInvoice = 2L;
+
+        Invoice invoice = new Invoice();
+        invoice.setIdInvoice(idInvoice);
+
+        when(invoiceRepository.findById(idInvoice)).thenReturn(Optional.of(invoice));
+        when(operatorRepository.findById(idOperator)).thenReturn(Optional.empty());
+
+        assertThrows(NullPointerException.class, () -> invoiceService.assignOperatorToInvoice(idOperator, idInvoice));
+    }
+/*
+    @Test
+    public void getInvoicesBySupplier_SupplierFound() {
+        Long idSupplier = 1L;
+        Supplier supplier = new Supplier(idSupplier, "Code1", "label1", SupplierCategory.CONVENTIONNE, new HashSet<>(), null);
+        Invoice invoice = new Invoice(1L, 10.0f, 100.0f, new Date(), new Date(), false, null, supplier);
+
+        // Add the invoice to the supplier's HashSet
+        supplier.getInvoices().add(invoice);
+
+        when(supplierRepository.findById(idSupplier)).thenReturn(Optional.of(supplier));
+
+        // Call the service method
+        List<Invoice> invoices = invoiceService.getInvoicesBySupplier(idSupplier);
+
+        verify(supplierRepository, times(1)).findById(idSupplier);
+
+        // Assert that the List contains the invoice
+        assertThat(invoices).contains(invoice);
+    }
+*/
+    @Test
+    public void getInvoicesBySupplierNotFound() {
+        Long idSupplier = 1L;
+
+        when(supplierRepository.findById(idSupplier)).thenReturn(Optional.empty());
+
+        assertThrows(NullPointerException.class, () -> invoiceService.getInvoicesBySupplier(idSupplier));
+
+        verify(supplierRepository, times(1)).findById(idSupplier);
+    }
 
 }
