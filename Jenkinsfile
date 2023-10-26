@@ -83,5 +83,16 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to Nexus') {
+            steps {
+                dir('DevOps_Project') {
+                    script {
+                        // Deploy Maven artifacts to Nexus
+                        sh 'mvn deploy -DskipTests' // Deploy and skip tests
+                    }
+                }
+            }
+        }
     }
 }
