@@ -7,6 +7,7 @@ pipeline {
     stages {
         stage('Checkout GIT') {
             steps {
+                echo "Getting Project from Git"
                 checkout scm
             }
         }
@@ -91,5 +92,11 @@ pipeline {
                 }
             }
         }
+
+        stage('SonarQube analysis') {
+    withSonarQubeEnv(installationName: 'MySonarQubeServer') { // You can override the credential to be used
+      sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+    }
+  }
     }
 }
