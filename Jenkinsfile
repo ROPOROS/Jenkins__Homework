@@ -83,15 +83,15 @@ pipeline {
             }
         }
 
-        stage('Deploy to Nexus') {
-            steps {
-                dir('DevOps_Project') {
-                    script {
-                        sh 'mvn deploy -DskipTests' 
-                    }
-                }
-            }
-        }
+        //stage('Deploy to Nexus') {
+        //    steps {
+        //        dir('DevOps_Project') {
+        //            script {
+        //                sh 'mvn deploy -DskipTests' 
+        //            }
+        //        }
+        //    }
+        //}
 
         stage('SonarQube analysis') {
             steps {
