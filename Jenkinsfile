@@ -4,6 +4,10 @@ pipeline {
         nodejs 'NodeJSInstaller'
     }
 
+    environment {
+    DOCKERHUB_CREDENTIALS = credentials('DockerHub')
+    }
+
     stages {
         stage('Checkout GIT') {
             steps {
@@ -105,11 +109,20 @@ pipeline {
         //     }
         // }
 
-        stage('Build Docker Image (Backend)') {
+        stage('Login Docker') {
+
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+        }
+
+        stage('Build & Push Docker Image (Backend)') {
             steps {
                 dir('DevOps_Project') {
                     script {
                         sh 'docker build -t devops_project .'
+                        sh 'docker tag Back roporos/devops_project'
+                        sh 'docker push roporos/devops_project'
                     }
                 }
             }
@@ -120,6 +133,9 @@ pipeline {
                 dir('DevOps_Project_Front') {
                     script {
                         sh 'docker build -t devops_project_front .'
+                        sh 'docker tag Front roporos/devops_project_front'
+                        sh 'docker push roporos/devops_project_front .'
+                        
                     }
                 }
             }
