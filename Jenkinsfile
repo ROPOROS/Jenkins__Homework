@@ -120,7 +120,7 @@ pipeline {
             steps {
                 dir('DevOps_Project') {
                     script {
-                        sh 'docker build -t devops_project .'
+                        sh 'docker build -t roporos/devops_project .'
                         sh 'docker push roporos/devops_project:back_devops'
                     }
                 }
@@ -131,7 +131,7 @@ pipeline {
             steps {
                 dir('DevOps_Project_Front') {
                     script {
-                        sh 'docker build -t devops_project_front .'
+                        sh 'docker build -t roporos/devops_project_front .'
                         sh 'docker push roporos/devops_project_front:front_devops'
                         
                     }
