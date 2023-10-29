@@ -77,7 +77,7 @@ pipeline {
                     script {
                         
                         sh 'npm install' 
-                        sh 'ng build --configuration=production'      
+                        sh 'ng build '      
                     }
                 }
             }
