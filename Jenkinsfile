@@ -77,7 +77,7 @@ pipeline {
                     script {
                         
                         sh 'npm install' 
-                        sh 'ng build'      
+                        sh 'ng build --prod'      
                     }
                 }
             }
@@ -115,15 +115,15 @@ pipeline {
             }
         }
 
-        // stage('Build Docker Image (Frontnd)') {
-        //     steps {
-        //         dir('DevOps_Project_Front') {
-        //             script {
-        //                 sh 'docker build -t devops_project_front .'
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Build Docker Image (Frontnd)') {
+            steps {
+                dir('DevOps_Project_Front') {
+                    script {
+                        sh 'docker build -t devops_project_front .'
+                    }
+                }
+            }
+        }
 
     }
 }

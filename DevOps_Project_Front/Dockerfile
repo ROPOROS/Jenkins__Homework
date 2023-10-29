@@ -1,8 +1,8 @@
-FROM nginx:latest
+FROM nginx:alpine
 
 RUN rm /etc/nginx/conf.d/default.conf
 
-COPY /app/dist/DevOps_Project_Front /usr/share/nginx/html
+COPY /DevOps_Project_Front/dist /usr/share/nginx/html
 
 EXPOSE 80
 
