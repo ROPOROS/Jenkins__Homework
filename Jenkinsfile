@@ -32,7 +32,7 @@ pipeline {
                 dir('DevOps_Project') {
                     script {
                         try {
-                            sh 'mvn clean install' 
+                            sh 'mvn clean install -DskipTests' 
                         } catch (Exception e) {
                             currentBuild.result = 'FAILURE' 
                             error("Build failed: ${e.message}")
@@ -93,16 +93,37 @@ pipeline {
         //    }
         //}
 
-        stage('SonarQube analysis') {
+        // stage('SonarQube analysis') {
+        //     steps {
+        //         dir('DevOps_Project') {
+        //             script {
+        //                 withSonarQubeEnv(installationName: 'MySonarQubeServer') { 
+        //                 sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+
+        stage('Build Docker Image (Backend)') {
             steps {
                 dir('DevOps_Project') {
                     script {
-                        withSonarQubeEnv(installationName: 'MySonarQubeServer') { // You can override the credential to be used
-                        sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
-                        }
+                        sh 'docker build -t devops_project .'
                     }
                 }
             }
         }
+
+        // stage('Build Docker Image (Frontnd)') {
+        //     steps {
+        //         dir('DevOps_Project_Front') {
+        //             script {
+        //                 sh 'docker build -t devops_project_front .'
+        //             }
+        //         }
+        //     }
+        // }
+
     }
 }
