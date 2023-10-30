@@ -2,36 +2,33 @@ version: '3'
 services:
   mysql:
     image: mysql:latest
+    ports:
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: devops
     volumes:
       - ./my-datavolume:/var/lib/mysql
     restart: unless-stopped
-    networks:
-      - mynetwork
 
   backend:
     build:
       context: ./DevOps_Project
+    ports:
+      - "8080:8080"
     depends_on:
       - mysql
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3333/devops?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/devops?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
     restart: on-failure
-    networks:
-      - mynetwork
 
   frontend:
     build:
       context: ./DevOps_Project_Front
+    ports:
+      - "80:80"
     depends_on:
       - backend
-    networks:
-      - mynetwork
 
-networks:
-  mynetwork:
-    driver: bridge
