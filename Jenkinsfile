@@ -142,7 +142,6 @@ pipeline {
 
         stage('Deploy Front/Back/DB') {
             steps {
-                
                 script {
                     sh 'docker-compose up -d'                        
                 }
