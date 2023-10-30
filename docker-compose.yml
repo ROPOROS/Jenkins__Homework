@@ -1,9 +1,9 @@
 version: '3'
 services:
   mysql:
-    image: mysql:8.0
+    image: mysql:latest
     ports:
-      - "3333:3306"
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: devops
@@ -14,7 +14,7 @@ services:
   backend:
     image: roporos/devops_project
     ports:
-      - "8081:8081"
+      - "8080:8080"
     depends_on:
       - mysql
     environment:
@@ -29,7 +29,6 @@ services:
       - "80:80"
     depends_on:
       - backend
-
 
 
 
