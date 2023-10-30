@@ -21,7 +21,7 @@ services:
     environment:
       - MYSQL_DATABASE=devops
       - MYSQL_USER=root
-      - MYSQL_PASSWORD=
+      - MYSQL_ALLOW_EMPTY_PASSWORD 
     volumes:
       - ./my-datavolume:/var/lib/mysql
     ports:
