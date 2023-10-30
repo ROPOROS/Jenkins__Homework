@@ -1,34 +1,24 @@
 version: '3'
 services:
-  mysql:
-    image: mysql:latest
+  backend:
+    image: roporos/devops_project
     ports:
-      - "3306:3306"
+      - "8081:8081"
+    depends_on:
+      - database
+    restart: on-failure
+  frontend:
+    image: roporos/devops_project_front
+    ports:
+      - "80:80"
+  database:
+    image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: devops
-    volumes:
-      - ./my-datavolume:/var/lib/mysql
+    ports:
+      - "3333:3306"
     restart: unless-stopped
 
-  backend:
-    build:
-      context: ./DevOps_Project
-    ports:
-      - "8080:8080"
-    depends_on:
-      - mysql
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/devops?createDatabaseIfNotExist=true
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
-    restart: on-failure
 
-  frontend:
-    build:
-      context: ./DevOps_Project_Front
-    ports:
-      - "80:80"
-    depends_on:
-      - backend
 
