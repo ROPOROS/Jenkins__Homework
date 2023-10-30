@@ -34,9 +34,9 @@ public class SupplierServiceImplTest {
     public void retrieveAllSuppliersTest() {
         when(supplierRepository.findAll()).thenReturn(
                 Arrays.asList(
-                        new Supplier(1L, "Code1", "label1", SupplierCategory.CONVENTIONNE, null, null),
-                        new Supplier(2L, "Code2", "label2", SupplierCategory.ORDINAIRE, null, null),
-                        new Supplier(3L, "Code3", "label3", SupplierCategory.ORDINAIRE, null, null)
+                        new Supplier(1L, "Code1", "label1", SupplierCategory.CONVENTIONNE, null),
+                        new Supplier(2L, "Code2", "label2", SupplierCategory.ORDINAIRE, null),
+                        new Supplier(3L, "Code3", "label3", SupplierCategory.ORDINAIRE, null)
                 )
         );
 
@@ -46,7 +46,7 @@ public class SupplierServiceImplTest {
     // Test for adding a supplier
     @Test
     public void addSupplierTest() {
-        Supplier supplier = new Supplier(1L,"Code1","label1", SupplierCategory.CONVENTIONNE,null, null);
+        Supplier supplier = new Supplier(1L,"Code1","label1", SupplierCategory.CONVENTIONNE,null);
         when(supplierRepository.save(supplier)).thenReturn(supplier);
         assertEquals(supplier, supplierService.addSupplier(supplier));
     }
@@ -54,7 +54,7 @@ public class SupplierServiceImplTest {
     // Test for supplier found
     @Test
     public void retreiveSupplierTest() {
-        Supplier supplier = new Supplier(2L,"Code2","label2", SupplierCategory.ORDINAIRE,null, null);
+        Supplier supplier = new Supplier(2L,"Code2","label2", SupplierCategory.ORDINAIRE,null);
         when(supplierRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(supplier));
         Supplier supplier1 = supplierService.retrieveSupplier(2L);
         Assertions.assertNotNull(supplier1);
@@ -79,7 +79,7 @@ public class SupplierServiceImplTest {
     //Test for updating a supplier
     @Test
     public void updateSupplierTest() {
-        Supplier supplier = new Supplier(1L,"Code1","label1", SupplierCategory.CONVENTIONNE,null, null);
+        Supplier supplier = new Supplier(1L,"Code1","label1", SupplierCategory.CONVENTIONNE,null);
         Mockito.when(supplierRepository.save(Mockito.any(Supplier.class))).thenReturn(supplier);
         supplier.setCode("Code15");;
         Supplier exisitingSupplier= supplierService.updateSupplier(supplier) ;

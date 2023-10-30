@@ -30,8 +30,8 @@ public class SupplierControllerTest {
     @Test
     public void getSuppliersTest() {
         List<Supplier> suppliers = new ArrayList<>();
-        suppliers.add(new Supplier(1L,"Code1","label1", SupplierCategory.CONVENTIONNE,null, null));
-        suppliers.add(new Supplier(2L,"Code2","label2", SupplierCategory.ORDINAIRE,null, null));
+        suppliers.add(new Supplier(1L,"Code1","label1", SupplierCategory.CONVENTIONNE,null));
+        suppliers.add(new Supplier(2L,"Code2","label2", SupplierCategory.ORDINAIRE,null));
 
         when(supplierService.retrieveAllSuppliers()).thenReturn(suppliers);
 
@@ -43,7 +43,7 @@ public class SupplierControllerTest {
 
     @Test
     public void retrieveSupplierTest() {
-        Supplier supplier = new Supplier(1L,"Code1","label1", SupplierCategory.CONVENTIONNE,null, null);
+        Supplier supplier = new Supplier(1L,"Code1","label1", SupplierCategory.CONVENTIONNE,null);
         when(supplierService.retrieveSupplier(1L)).thenReturn(supplier);
 
         Supplier retrievedSupplier = supplierController.retrieveSupplier(1L);
@@ -53,7 +53,7 @@ public class SupplierControllerTest {
 
     @Test
     public void addSupplierTest() {
-        Supplier supplier = new Supplier(1L,"Code1","label1", SupplierCategory.CONVENTIONNE,null, null);
+        Supplier supplier = new Supplier(1L,"Code1","label1", SupplierCategory.CONVENTIONNE,null);
 
         when(supplierService.addSupplier(supplier)).thenReturn(supplier);
 
@@ -71,7 +71,7 @@ public class SupplierControllerTest {
 
     @Test
     public void modifySupplierTest() {
-        Supplier supplier = new Supplier(1L,"Code1","label1", SupplierCategory.CONVENTIONNE,null, null);
+        Supplier supplier = new Supplier(1L,"Code1","label1", SupplierCategory.CONVENTIONNE,null);
         when(supplierService.updateSupplier(supplier)).thenReturn(supplier);
 
         Supplier modifiedSupplier = supplierController.modifyFournisseur(supplier);

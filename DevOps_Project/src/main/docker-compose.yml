@@ -1,0 +1,26 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./DevOps_Project     
+    ports:
+      - "8081:8080"
+    depends_on:
+      - mysql        
+
+  frontend:
+    build:
+      context: ./DevOps_Project_Front   
+    ports:
+      - "80:80"            
+
+  mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_DATABASE=devops
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=
+    volumes:
+      - ./my-datavolume:/var/lib/mysql
+    ports:
+      - "3333:3306"
