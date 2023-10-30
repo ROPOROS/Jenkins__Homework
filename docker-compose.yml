@@ -1,20 +1,5 @@
 version: '3'
 services:
-  backend:
-    build:
-      context: ./DevOps_Project
-    ports:
-      - "8081:8080"
-    depends_on:
-      - mysql
-
-  frontend:
-    build:
-      context: ./DevOps_Project_Front
-    ports:
-      - "8089:80"
-    depends_on:
-      - backend
 
   mysql:
     image: mysql:latest
@@ -27,3 +12,21 @@ services:
       MYSQL_PASSWORD: root  
     volumes:
       - ./my-datavolume:/var/lib/mysql
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./DevOps_Project
+    ports:
+      - "8081:8080"
+    depends_on:
+      - mysql
+    restart: on-failure
+
+  frontend:
+    build:
+      context: ./DevOps_Project_Front
+    ports:
+      - "8089:80"
+    depends_on:
+      - backend
