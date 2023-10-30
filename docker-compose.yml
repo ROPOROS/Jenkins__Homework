@@ -12,7 +12,7 @@ services:
     build:
       context: ./DevOps_Project_Front   
     ports:
-      - "80:80"            
+      - "8089:80"            
 
   mysql:
     image: mysql:latest
