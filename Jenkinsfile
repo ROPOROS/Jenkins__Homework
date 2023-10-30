@@ -143,7 +143,7 @@ pipeline {
         stage('Deploy Front/Back/DB') {
             steps {
                 script {
-                    sh 'docker-compose up -d'                        
+                    sh 'docker compose up -d'                        
                 }
                 
             }
