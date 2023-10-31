@@ -30,5 +30,12 @@ services:
     depends_on:
       - backend
 
+  SonarQ:
+    image: sonarqube:8.9.7-community
+  
+  Nex:
+    image: sonatype/nexus3
+
+
 
 
