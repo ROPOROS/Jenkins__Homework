@@ -21,7 +21,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/devops?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
-    restart: on-failure
+    restart: unless-stopped
 
   frontend:
     image: roporos/devops_project_front
@@ -29,12 +29,6 @@ services:
       - "80:80"
     depends_on:
       - backend
-
-  SonarQ:
-    image: sonarqube:8.9.7-community
-  
-  Nex:
-    image: sonatype/nexus3
 
 
 
