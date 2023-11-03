@@ -119,22 +119,36 @@ pipeline {
 
         stage('Build & Push Docker Image (Backend)') {
             steps {
-                dir('DevOps_Project') {
-                    script {
-                        sh 'docker build -t roporos/devops_project .'
-                        sh 'docker push roporos/devops_project'
+                script {
+                    def dockerImage = 'roporos/devops_project'
+                    def imageExists = sh(script: "docker inspect --type=image $dockerImage", returnStatus: true) == 0
+
+                    if (!imageExists) {
+                        dir('DevOps_Project') {
+                            sh "docker build -t $dockerImage ."
+                            sh "docker push $dockerImage"
+                        }
+                    } else {
+                        echo "Docker image $dockerImage already exists. Skipping the build and push steps."
                     }
                 }
             }
         }
 
-        stage('Build Docker Image (Frontnd)') {
+
+        stage('Build & Push Docker Image (Frontend)') {
             steps {
-                dir('DevOps_Project_Front') {
-                    script {
-                        sh 'docker build -t roporos/devops_project_front .'
-                        sh 'docker push roporos/devops_project_front'
-                        
+                script {
+                    def dockerImage = 'roporos/devops_project_front'
+                    def imageExists = sh(script: "docker inspect --type=image $dockerImage", returnStatus: true) == 0
+
+                    if (!imageExists) {
+                        dir('DevOps_Project_Front') {
+                            sh "docker build -t $dockerImage ."
+                            sh "docker push $dockerImage"
+                        }
+                    } else {
+                        echo "Docker image $dockerImage already exists. Skipping the build and push steps."
                     }
                 }
             }
