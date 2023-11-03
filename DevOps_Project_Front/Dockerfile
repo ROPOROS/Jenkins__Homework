@@ -1,7 +1,9 @@
 FROM nginx:latest
 
-RUN rm /etc/nginx/conf.d/default.conf
+WORKDIR /DevOps_Project_Front
 
-COPY dist/summer-workshop-angular /usr/share/nginx/html
+EXPOSE 80
+
+COPY DevOps_Project_Front/dist/summer-workshop-angular /usr/share/nginx/html
 
 CMD ["nginx", "-g", "daemon off;"]
