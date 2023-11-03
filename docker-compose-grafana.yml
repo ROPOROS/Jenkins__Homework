@@ -4,7 +4,7 @@ services:
     image: grafana/grafana
     container_name: grafana
     volumes:
-      - ./my-datavolume/grafana:/var/lib/grafana
+      - ./grafana-volume:/var/lib/grafana
     user: "472:472" 
     ports:
       - "3000:3000"
