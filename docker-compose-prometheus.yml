@@ -1,6 +1,9 @@
 version: '3'
 services:
   prometheus:
+    extends:
+      file: docker-compose.yml  
+      service: backend 
     image: prom/prometheus:latest
     container_name: prometheus
     volumes:
@@ -9,8 +12,6 @@ services:
       - "9090:9090"
     networks:
       - monitoring
-    depends_on:
-      - backend
 
 networks:
   monitoring:

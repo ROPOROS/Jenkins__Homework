@@ -1,6 +1,9 @@
 version: '3'
 services:
   grafana:
+    extends:
+      file: docker-compose.yml 
+      service: backend 
     image: grafana/grafana:latest
     container_name: grafana
     volumes:
