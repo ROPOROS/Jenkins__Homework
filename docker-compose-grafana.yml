@@ -5,8 +5,7 @@ services:
     container_name: grafana
     volumes:
       - ./grafana:/var/lib/grafana
+    user: "472:472" 
     ports:
       - "3000:3000"
-    user: "472:472"
-
-
+    restart: unless-stopped
