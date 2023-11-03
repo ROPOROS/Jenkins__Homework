@@ -1,17 +1,11 @@
 version: '3'
 services:
   prometheus:
-    extends:
-      file: docker-compose.yml  
-      service: backend 
-    image: prom/prometheus:latest
+    image: prom/prometheus
     container_name: prometheus
     volumes:
-      - ./prometheus:/etc/prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml 
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
     ports:
       - "9090:9090"
-    networks:
-      - monitoring
-
-networks:
-  monitoring:
