@@ -74,15 +74,15 @@ pipeline {
             }
         }
 
-        stage('Deploy to Nexus') {
-            steps {
-                dir('DevOps_Project') {
-                    script {
-                        sh 'mvn deploy'
-                    }
-                }
-            }
-        }
+        // stage('Deploy to Nexus') {
+        //     steps {
+        //         dir('DevOps_Project') {
+        //             script {
+        //                 sh 'mvn deploy'
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('SonarQube analysis') {
             steps {
