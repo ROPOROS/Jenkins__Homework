@@ -109,67 +109,67 @@ pipeline {
             }
         }
 
-        stage('Login Docker') {
+        // stage('Login Docker') {
 
-            steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-            }
-        }
+        //     steps {
+        //         sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+        //     }
+        // }
 
-        stage('Build & Push Docker Image (Backend)') {
-            steps {
-                script {
-                    def dockerImage = 'roporos/devops_project'
-                    def imageExists = sh(script: "docker inspect --type=image $dockerImage", returnStatus: true) == 0
+        // stage('Build & Push Docker Image (Backend)') {
+        //     steps {
+        //         script {
+        //             def dockerImage = 'roporos/devops_project'
+        //             def imageExists = sh(script: "docker inspect --type=image $dockerImage", returnStatus: true) == 0
 
-                    if (!imageExists) {
-                        dir('DevOps_Project') {
-                            sh "docker build -t $dockerImage ."
-                            sh "docker push $dockerImage"
-                        }
-                    } else {
-                        echo "Docker image $dockerImage already exists. Skipping the build and push steps."
-                    }
-                }
-            }
-        }
+        //             if (!imageExists) {
+        //                 dir('DevOps_Project') {
+        //                     sh "docker build -t $dockerImage ."
+        //                     sh "docker push $dockerImage"
+        //                 }
+        //             } else {
+        //                 echo "Docker image $dockerImage already exists. Skipping the build and push steps."
+        //             }
+        //         }
+        //     }
+        // }
 
 
-        stage('Build & Push Docker Image (Frontend)') {
-            steps {
-                script {
-                    def dockerImage = 'roporos/devops_project_front'
-                    def imageExists = sh(script: "docker inspect --type=image $dockerImage", returnStatus: true) == 0
+        // stage('Build & Push Docker Image (Frontend)') {
+        //     steps {
+        //         script {
+        //             def dockerImage = 'roporos/devops_project_front'
+        //             def imageExists = sh(script: "docker inspect --type=image $dockerImage", returnStatus: true) == 0
 
-                    if (!imageExists) {
-                        dir('DevOps_Project_Front') {
-                            sh "docker build -t $dockerImage ."
-                            sh "docker push $dockerImage"
-                        }
-                    } else {
-                        echo "Docker image $dockerImage already exists. Skipping the build and push steps."
-                    }
-                }
-            }
-        }
+        //             if (!imageExists) {
+        //                 dir('DevOps_Project_Front') {
+        //                     sh "docker build -t $dockerImage ."
+        //                     sh "docker push $dockerImage"
+        //                 }
+        //             } else {
+        //                 echo "Docker image $dockerImage already exists. Skipping the build and push steps."
+        //             }
+        //         }
+        //     }
+        // }
 
-        stage('Deploy Front/Back/DB') {
-            steps {
-                script {
-                    sh 'docker-compose -f docker-compose.yml up -d'                        
-                }
+        // stage('Deploy Front/Back/DB') {
+        //     steps {
+        //         script {
+        //             sh 'docker-compose -f docker-compose.yml up -d'                        
+        //         }
                 
-            }
-        }
+        //     }
+        // }
 
-        stage('Deploy Grafana and Prometheus') {
-            steps {
-                script {
-                    sh 'docker-compose -f docker-compose-prometheus.yml -f docker-compose-grafana.yml up -d'                        
-                }
+        // stage('Deploy Grafana and Prometheus') {
+        //     steps {
+        //         script {
+        //             sh 'docker-compose -f docker-compose-prometheus.yml -f docker-compose-grafana.yml up -d'                        
+        //         }
                 
-            }
-        }
+        //     }
+        // }
 
     }
 }
