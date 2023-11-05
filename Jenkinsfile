@@ -24,7 +24,6 @@ pipeline {
                     }
                 }
             }
-            //
             post {
                 always {
                     junit '**/target/surefire-reports/TEST-*.xml'
@@ -88,27 +87,27 @@ pipeline {
             }
         }
 
-        //stage('Deploy to Nexus') {
-        //    steps {
-        //        dir('DevOps_Project') {
-        //            script {
-        //                sh 'mvn deploy -DskipTests' 
-        //            }
-        //        }
-        //    }
-        //}
+        stage('Deploy to Nexus') {
+            steps {
+                dir('DevOps_Project') {
+                    script {
+                        sh 'mvn deploy -DskipTests' 
+                    }
+                }
+            }
+        }
 
-        // stage('SonarQube analysis') {
-        //     steps {
-        //         dir('DevOps_Project') {
-        //             script {
-        //                 withSonarQubeEnv(installationName: 'MySonarQubeServer') { 
-        //                 sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+        stage('SonarQube analysis') {
+            steps {
+                dir('DevOps_Project') {
+                    script {
+                        withSonarQubeEnv(installationName: 'MySonarQubeServer') { 
+                        sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+                        }
+                    }
+                }
+            }
+        }
 
         stage('Login Docker') {
 

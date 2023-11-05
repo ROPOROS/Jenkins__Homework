@@ -28,7 +28,6 @@ public class OperatorControllerTest {
 
     @Test
     public void getOperatorsTest() {
-        // Mock the behavior to return a list of operators
         when(operatorService.retrieveAllOperators()).thenReturn(Arrays.asList(
                 new Operator(1L,"fathi","hadewi","fathi123", null),
                 new Operator(2L,"hamza","lahmer","hamza123", null)
@@ -41,7 +40,6 @@ public class OperatorControllerTest {
 
     @Test
     public void retrieveOperatorTest() {
-        // Mock the behavior to return an operator
         when(operatorService.retrieveOperator(1L)).thenReturn(new Operator(1L,"fathi","hadewi","fathi123", null));
 
         Operator operator = operatorController.retrieveoperator(1L);

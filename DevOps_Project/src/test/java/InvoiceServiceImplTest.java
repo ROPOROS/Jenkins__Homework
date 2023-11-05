@@ -65,7 +65,6 @@ public class InvoiceServiceImplTest {
 
     @Test
     public void cancelInvoiceNotFoundTest() {
-        // Simulate that the invoice is not found
         when(invoiceRepository.findById(1L)).thenReturn(Optional.empty());
 
         Assertions.assertThrows(NullPointerException.class, () -> {
@@ -178,6 +177,14 @@ public class InvoiceServiceImplTest {
         assertThrows(NullPointerException.class, () -> invoiceService.getInvoicesBySupplier(idSupplier));
 
         verify(supplierRepository, times(1)).findById(idSupplier);
+    }
+
+    @Test
+    public void testGetInvoicesBySupplierSupplierNotFound() {
+        Long idSupplier = 1L;
+
+        when(supplierRepository.findById(idSupplier)).thenReturn(Optional.empty());
+        assertThrows(NullPointerException.class, () -> invoiceService.getInvoicesBySupplier(idSupplier));
     }
 
 }

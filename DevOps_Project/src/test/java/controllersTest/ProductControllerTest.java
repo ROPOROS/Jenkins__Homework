@@ -28,29 +28,22 @@ public class ProductControllerTest {
 
     @Test
     public void addProductTest() {
-        // Create a new product for testing
         Product product = new Product(1L, "Product1", 10.0f, 33, ProductCategory.ELECTRONICS, null);
 
-        // Mock the behavior to return the added product
         when(productService.addProduct(product, 1L)).thenReturn(product);
 
-        // Call the controller method
         Product result = productController.addProduct(product, 1L);
 
-        // Verify the results
         assertEquals("Product1", result.getTitle());
     }
 
     @Test
     public void retrieveProductTest() {
-        // Mock the behavior to return a product
         Product product = new Product(1L, "Product1", 10.0f, 33, ProductCategory.ELECTRONICS, null);
         when(productService.retrieveProduct(1L)).thenReturn(product);
 
-        // Call the controller method
         Product result = productController.retrieveProduct(1L);
 
-        // Verify the results
         assertEquals("Product1", result.getTitle());
     }
 
