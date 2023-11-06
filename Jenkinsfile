@@ -1,11 +1,12 @@
 pipeline {
     agent any
-    tools{
+
+    tools {
         nodejs 'NodeJSInstaller'
     }
 
     environment {
-    DOCKERHUB_CREDENTIALS = credentials('DockerHub')
+        DOCKERHUB_CREDENTIALS = credentials('DockerHub')
     }
 
     stages {
@@ -16,29 +17,14 @@ pipeline {
             }
         }
 
-        stage('Run Unit Tests JUNIT') {
-            steps {
-                dir('DevOps_Project') {
-                    script {
-                        sh 'mvn clean test' 
-                    }
-                }
-            }
-            post {
-                always {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                }
-            }
-        }
-
         stage('Build and Test Backend') {
             steps {
                 dir('DevOps_Project') {
                     script {
                         try {
-                            sh 'mvn clean install -DskipTests' 
+                            sh 'mvn clean install'
                         } catch (Exception e) {
-                            currentBuild.result = 'FAILURE' 
+                            currentBuild.result = 'FAILURE'
                             error("Build failed: ${e.message}")
                         }
                     }
@@ -48,9 +34,9 @@ pipeline {
             post {
                 success {
                     script {
-                        def subject = "Build and Test Backend Check"
+                        def subject = "Test and Build Check"
                         def body = "BUILD GOOD"
-                        def to = 'raedking779@gmail.com' 
+                        def to = 'raedking779@gmail.com'
 
                         mail(
                             subject: subject,
@@ -63,7 +49,7 @@ pipeline {
                     script {
                         def subject = "Build Failure - ${currentBuild.fullDisplayName}"
                         def body = "The build has failed in the Jenkins pipeline. Please investigate and take appropriate action."
-                        def to = 'raedking779@gmail.com' 
+                        def to = 'raedking779@gmail.com'
 
                         mail(
                             subject: subject,
@@ -72,6 +58,9 @@ pipeline {
                         )
                     }
                 }
+                always {
+                    junit '**/target/surefire-reports/TEST-*.xml'
+                }
             }
         }
 
@@ -79,9 +68,8 @@ pipeline {
             steps {
                 dir('DevOps_Project_Front') {
                     script {
-                        
-                        sh 'npm install' 
-                        sh 'ng build '      
+                        sh 'npm install'
+                        sh 'ng build'
                     }
                 }
             }
@@ -91,7 +79,7 @@ pipeline {
         //     steps {
         //         dir('DevOps_Project') {
         //             script {
-        //                 sh 'mvn deploy -DskipTests' 
+        //                 sh 'mvn deploy'
         //             }
         //         }
         //     }
@@ -101,8 +89,8 @@ pipeline {
             steps {
                 dir('DevOps_Project') {
                     script {
-                        withSonarQubeEnv(installationName: 'MySonarQubeServer') { 
-                        sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+                        withSonarQubeEnv(installationName: 'MySonarQubeServer') {
+                            sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
                         }
                     }
                 }
@@ -110,7 +98,6 @@ pipeline {
         }
 
         stage('Login Docker') {
-
             steps {
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
@@ -134,7 +121,6 @@ pipeline {
             }
         }
 
-
         stage('Build & Push Docker Image (Frontend)') {
             steps {
                 script {
@@ -156,20 +142,53 @@ pipeline {
         stage('Deploy Front/Back/DB') {
             steps {
                 script {
-                    sh 'docker-compose -f docker-compose.yml up -d'                        
+                    sh 'docker-compose -f docker-compose.yml up -d'
                 }
-                
             }
         }
 
         stage('Deploy Grafana and Prometheus') {
             steps {
                 script {
-                    sh 'docker-compose -f docker-compose-prometheus.yml -f docker-compose-grafana.yml up -d'                        
+                    sh 'docker-compose -f docker-compose-prometheus.yml -f docker-compose-grafana.yml up -d'
                 }
-                
+            }
+        }
+    }
+    
+    post {
+        always {
+            script {
+                currentBuild.result = 'Pipeline Completed'
             }
         }
 
+        success {
+            script {
+                def subject = "Pipeline Successfully Completed - ${currentBuild.fullDisplayName}"
+                def body = "The Jenkins pipeline has completed successfully."
+                def to = 'raedking779@gmail.com'
+
+                mail(
+                    subject: subject,
+                    body: body,
+                    to: to,
+                )
+            }
+        }
+
+        failure {
+            script {
+                def subject = "Pipeline Failed - ${currentBuild.fullDisplayName}"
+                def body = "The Jenkins pipeline has failed. Please investigate and take appropriate action."
+                def to = 'raedking779@gmail.com'
+
+                mail(
+                    subject: subject,
+                    body: body,
+                    to: to,
+                )
+            }
+        }
     }
 }
