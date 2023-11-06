@@ -27,6 +27,6 @@ scrape_configs:
     - targets: ['192.168.33.10:9999']
   - job_name: 'springBoot'
     metrics_path: /actuator/prometheus
-    scrape_interval: 15s
+    scrape_interval: 5s
     static_configs:
     - targets: ['192.168.33.10:8082']
