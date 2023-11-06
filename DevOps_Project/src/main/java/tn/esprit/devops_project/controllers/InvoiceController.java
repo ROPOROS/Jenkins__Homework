@@ -11,6 +11,8 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
+
 public class InvoiceController {
 
     IInvoiceService invoiceService;

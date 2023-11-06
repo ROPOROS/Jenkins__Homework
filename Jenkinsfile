@@ -33,7 +33,7 @@ pipeline {
             post {
                 success {
                     script {
-                        def subject = "HURRAAYYY"
+                        def subject = "Test and Build Check"
                         def body = "BUILD GOOD"
                         def to = 'raedking779@gmail.com'
 
@@ -144,6 +144,28 @@ pipeline {
                     sh 'docker-compose -f docker-compose.yml up -d'
                 }
             }
+
+            post {
+                always {
+                    script {
+                        currentBuild.result = 'Deployment Check'
+                    }
+                }
+
+                failure {
+                    script {
+                        def subject = "Deployment Failure - ${currentBuild.fullDisplayName}"
+                        def body = "The deployment has failed in the Jenkins pipeline. Please investigate and take appropriate action."
+                        def to = 'raedking779@gmail.com'
+
+                        mail(
+                            subject: subject,
+                            body: body,
+                            to: to,
+                        )
+                    }
+                }
+            }
         }
 
         stage('Deploy Grafana and Prometheus') {
@@ -153,5 +175,42 @@ pipeline {
                 }
             }
         }
+        
+        post {
+            always {
+                script {
+                    currentBuild.result = 'Pipeline Completed'
+                }
+            }
+
+            success {
+                script {
+                    def subject = "Pipeline Successfully Completed - ${currentBuild.fullDisplayName}"
+                    def body = "The Jenkins pipeline has completed successfully."
+                    def to = 'raedking779@gmail.com'
+
+                    mail(
+                        subject: subject,
+                        body: body,
+                        to: to,
+                    )
+                }
+            }
+
+            failure {
+                script {
+                    def subject = "Pipeline Failed - ${currentBuild.fullDisplayName}"
+                    def body = "The Jenkins pipeline has failed. Please investigate and take appropriate action."
+                    def to = 'raedking779@gmail.com'
+
+                    mail(
+                        subject: subject,
+                        body: body,
+                        to: to,
+                    )
+                }
+            }
+        }
+        
     }
 }
