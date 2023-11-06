@@ -1,5 +1,6 @@
 pipeline {
     agent any
+
     tools {
         nodejs 'NodeJSInstaller'
     }
@@ -68,7 +69,7 @@ pipeline {
                 dir('DevOps_Project_Front') {
                     script {
                         sh 'npm install'
-                        sh 'ng build '
+                        sh 'ng build'
                     }
                 }
             }
@@ -175,42 +176,41 @@ pipeline {
                 }
             }
         }
-        
-        post {
-            always {
-                script {
-                    currentBuild.result = 'Pipeline Completed'
-                }
-            }
-
-            success {
-                script {
-                    def subject = "Pipeline Successfully Completed - ${currentBuild.fullDisplayName}"
-                    def body = "The Jenkins pipeline has completed successfully."
-                    def to = 'raedking779@gmail.com'
-
-                    mail(
-                        subject: subject,
-                        body: body,
-                        to: to,
-                    )
-                }
-            }
-
-            failure {
-                script {
-                    def subject = "Pipeline Failed - ${currentBuild.fullDisplayName}"
-                    def body = "The Jenkins pipeline has failed. Please investigate and take appropriate action."
-                    def to = 'raedking779@gmail.com'
-
-                    mail(
-                        subject: subject,
-                        body: body,
-                        to: to,
-                    )
-                }
+    }
+    
+    post {
+        always {
+            script {
+                currentBuild.result = 'Pipeline Completed'
             }
         }
-        
+
+        success {
+            script {
+                def subject = "Pipeline Successfully Completed - ${currentBuild.fullDisplayName}"
+                def body = "The Jenkins pipeline has completed successfully."
+                def to = 'raedking779@gmail.com'
+
+                mail(
+                    subject: subject,
+                    body: body,
+                    to: to,
+                )
+            }
+        }
+
+        failure {
+            script {
+                def subject = "Pipeline Failed - ${currentBuild.fullDisplayName}"
+                def body = "The Jenkins pipeline has failed. Please investigate and take appropriate action."
+                def to = 'raedking779@gmail.com'
+
+                mail(
+                    subject: subject,
+                    body: body,
+                    to: to,
+                )
+            }
+        }
     }
 }
