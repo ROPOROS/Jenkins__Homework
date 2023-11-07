@@ -1,6 +1,5 @@
 pipeline {
     agent any
-
     tools {
         nodejs 'NodeJSInstaller'
     }
@@ -34,7 +33,7 @@ pipeline {
             post {
                 success {
                     script {
-                        def subject = "Test and Build Check"
+                        def subject = "Test And Build Check"
                         def body = "BUILD GOOD"
                         def to = 'raedking779@gmail.com'
 
@@ -69,7 +68,7 @@ pipeline {
                 dir('DevOps_Project_Front') {
                     script {
                         sh 'npm install'
-                        sh 'ng build'
+                        sh 'ng build '
                     }
                 }
             }
@@ -152,42 +151,6 @@ pipeline {
                 script {
                     sh 'docker-compose -f docker-compose-prometheus.yml -f docker-compose-grafana.yml up -d'
                 }
-            }
-        }
-    }
-    
-    post {
-        always {
-            script {
-                currentBuild.result = 'Pipeline Completed'
-            }
-        }
-
-        success {
-            script {
-                def subject = "Pipeline Successfully Completed - ${currentBuild.fullDisplayName}"
-                def body = "The Jenkins pipeline has completed successfully."
-                def to = 'raedking779@gmail.com'
-
-                mail(
-                    subject: subject,
-                    body: body,
-                    to: to,
-                )
-            }
-        }
-
-        failure {
-            script {
-                def subject = "Pipeline Failed - ${currentBuild.fullDisplayName}"
-                def body = "The Jenkins pipeline has failed. Please investigate and take appropriate action."
-                def to = 'raedking779@gmail.com'
-
-                mail(
-                    subject: subject,
-                    body: body,
-                    to: to,
-                )
             }
         }
     }
